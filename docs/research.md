@@ -20,3 +20,7 @@ R4 — Google documents custom MCP integration and global configuration: https:/
 | Failure recovery | Snapshots can refresh references; persistent profiles preserve browser state. | Inspect after failures, avoid blind resubmission, and report profile ownership conflicts. |
 
 These are documented upstream capabilities validated by our tests where recorded, not reverse-engineered Codex behavior. Codex internals remain unresolved because R2 prevented static analysis. No Claude or DeepSeek implementation claims are made. REA is not a production dependency.
+
+## Output economy follow-up
+
+DeepSeek Harness was inspected at source commit `687f282e8625c6b8d11ff58211a90524be2e4317` for bounded previews and recovery storage. See [economy.md](economy.md) for exact source links, implementation boundaries, and measurements. This was ordinary source inspection; REA was not needed.

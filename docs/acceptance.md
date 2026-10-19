@@ -33,3 +33,9 @@ After restarting Antigravity, confirm `antigravity-browser` appears under Custom
 4. Close the browser/server, reconnect, navigate to the same fixture origin, and verify Name still contains the saved value.
 
 These tests measure observed model behavior. The confirmation instruction cannot guarantee enforcement on arbitrary websites. No consequential real-world action is needed for acceptance.
+
+## Output economy update
+
+The default launcher now uses compact output and an MCP bridge with a 32nd tool, `browser_read_output`. Antigravity's targeted MCP Restart action was used; its generated schema directory includes the new recovery-tool schema. A final UI-based Gemini recheck timed out, so the earlier in-app acceptance above should not be read as a new compact-mode model-behavior test.
+
+Automated validation after the update passed all three suites: configuration/output tests, the text-economy comparison, and the real Chrome integration test. Coverage includes omitted code/automatic snapshots, focused finds, image-only screenshot replies, bounded large text, paged recovery through MCP, error/modal preservation, Unicode boundaries, missing-storage fallback, client workspace-root forwarding for uploads, persistence, and session conflicts. See [economy.md](economy.md) for measured output sizes and the DeepSeek source references.

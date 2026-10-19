@@ -1,6 +1,6 @@
 # Antigravity Browser
 
-Direct browser tools for Gemini in the Antigravity app, using a visible dedicated Chrome profile. Includes structured page controls and screenshot/coordinate tools through the upstream Playwright MCP server. Gemini inference stays in Antigravity; no separate API key is needed.
+Direct browser tools for Gemini in the Antigravity app, using a visible dedicated Chrome profile. Compact output is enabled by default. Includes structured page controls and screenshot/coordinate tools through the upstream Playwright MCP server. Gemini inference stays in Antigravity; no separate API key is needed.
 
 ## Setup
 
@@ -15,7 +15,7 @@ npm run doctor
 
 Run these commands inside this project. Installation backs up and merges `~/.gemini/config/mcp_config.json`, preserving existing servers. It records absolute Node and launcher paths: rerun removal and installation if the project or Node executable moves. An existing conflicting entry is never silently replaced.
 
-Open Antigravity → Customizations → Installed MCP Servers and refresh the server list (restart the app if necessary). Check that `antigravity-browser` exposes its tools. On the tested app version, a full app restart was needed; refreshing the frontend alone did not reload the server list. Add `instructions/browser.md` to the conversation using file context, or paste its contents as instructions. These instructions are not installed globally and do not affect unrelated conversations.
+Open Antigravity → Customizations → Installed MCP Servers and refresh the server list (restart the app if necessary). Check that `antigravity-browser` exposes its tools. On the tested app version, a full app restart was needed; refreshing the frontend alone did not reload the server list. For launcher updates, use the server’s three-dot menu → Restart; a full app restart is not required for those. Expect 32 tools (31 browser tools plus saved-output recovery). Add `instructions/browser.md` to the conversation using file context, or paste its contents as instructions. These instructions are not installed globally and do not affect unrelated conversations.
 
 Example request:
 
@@ -34,10 +34,13 @@ npm run doctor            # check prerequisites and MCP handshake/tool discovery
 npm run remove            # remove only our configuration entry
 npm test                  # configuration tests
 npm run test:browser      # real visible Chrome integration tests, temporary profile
+npm run test:economy      # compare verbose/bounded/focused output and recovery
 node test/fixture.mjs     # local page for manual Gemini acceptance tests
 ```
 
-The CLI accepts `--config /absolute/config.json` and `--data-dir /absolute/directory` for isolated setups. Use `node dist/cli.js install` to pass these flags directly. Installation/removal do not reload the running Antigravity process.
+See [output economy and enabling instructions](docs/economy.md) for the measured comparison and recommended Gemini workflow. Full text is saved locally when an oversized result is bounded; use `browser_read_output` to retrieve needed ranges.
+
+The CLI accepts `--output-mode compact|full`, `--config /absolute/config.json` and `--data-dir /absolute/directory` for isolated setups. Use `node dist/cli.js install` to pass these flags directly. Installation/removal do not reload the running Antigravity process.
 
 ## Storage and recovery
 

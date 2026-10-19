@@ -3,16 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": {"node": ">=22"},
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/cli.js serve",
     "configure": "node dist/cli.js install",
     "remove": "node dist/cli.js remove",
     "doctor": "node dist/cli.js doctor",
-    "test": "npm run build && node --test test/config.test.mjs",
-    "test:browser": "npm run build && node --test test/browser.test.mjs"
+    "test": "npm run build && node --test test/config.test.mjs test/output.test.mjs",
+    "test:browser": "npm run build && node --test test/browser.test.mjs",
+    "test:economy": "npm run build && node --test test/economy.test.mjs"
   },
-  "dependencies": {"@playwright/mcp": "0.0.83", "@modelcontextprotocol/sdk": "1.32.1"},
-  "devDependencies": {"typescript": "5.9.3", "@types/node": "26.6.5"}
+  "dependencies": {
+    "@playwright/mcp": "0.0.83",
+    "@modelcontextprotocol/sdk": "1.32.1"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "26.6.5"
+  }
 }

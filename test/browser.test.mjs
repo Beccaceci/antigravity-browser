@@ -8,11 +8,14 @@ import {once} from 'node:events';
 import {Client} from '@modelcontextprotocol/sdk/client/index.js';
 import {StdioClientTransport} from '@modelcontextprotocol/sdk/client/stdio.js';
 import {startFixture} from './fixture.mjs';
+import {ListRootsRequestSchema} from '@modelcontextprotocol/sdk/types.js';
+import {pathToFileURL} from 'node:url';
 const cli=resolve('dist/cli.js');
 async function connect(data){
   const transport=new StdioClientTransport({command:process.execPath,args:[cli,'serve','--data-dir',data],stderr:'pipe'});
   let stderr='';transport.stderr?.on('data',chunk=>stderr+=chunk);
-  const client=new Client({name:'browser-test',version:'1.0'});
+  const client=new Client({name:'browser-test',version:'1.0'},{capabilities:{roots:{listChanged:true}}});
+  client.setRequestHandler(ListRootsRequestSchema,async()=>({roots:[{uri:pathToFileURL(data).href,name:'test workspace'}]}));
   await client.connect(transport,{timeout:20000}).catch(error=>{throw new Error(error.message+' '+stderr)});
   return {client,async close(){try{await client.close()}finally{await transport.close()}}};
 }
@@ -26,12 +29,16 @@ test('real Chrome: tools, forms, screenshots, visual actions, files, tabs, recov
     session=await connect(data);let client=session.client;
     const names=(await client.listTools()).tools.map(t=>t.name);
     for(const name of ['browser_navigate','browser_snapshot','browser_mouse_click_xy','browser_file_upload','browser_tabs'])assert.ok(names.includes(name),name);
-    await call(client,'browser_navigate',{url});
+    const navigation=await call(client,'browser_navigate',{url});
+    assert.doesNotMatch(text(navigation), /Ran Playwright code|### Snapshot/);
+    const focused=await call(client,'browser_find',{regex:'Name|Save draft'});
+    assert.match(text(focused), /Name/);
     await call(client,'browser_type',{target:'#name',text:'Gemini acceptance'});
     await call(client,'browser_click',{target:'#save'});
     assert.match(text(await call(client,'browser_snapshot')),/Saved draft: Gemini acceptance/);
     const shot=await call(client,'browser_take_screenshot',{scale:'css'});
     assert.ok(shot.content.some(c=>c.type==='image'),'screenshot reaches model as image content');
+    assert.equal(shot.content.filter(c=>c.type==='text').length,0,'image reply omits duplicate text');
     const snapshot=text(await call(client,'browser_snapshot',{boxes:true}));
     // Fixture geometry is measured through the page, independently of accessibility refs.
     const geometry=await call(client,'browser_evaluate',{function:'() => { const b=document.querySelector("canvas").getBoundingClientRect(); return {x:b.x+20,y:b.y+20}; }'});
@@ -40,7 +47,7 @@ test('real Chrome: tools, forms, screenshots, visual actions, files, tabs, recov
     await call(client,'browser_mouse_click_xy',{x:Number(match[1]),y:Number(match[2])});
     assert.match(text(await call(client,'browser_snapshot')),/Canvas clicked/);
     await call(client,'browser_click',{target:'#upload'});
-    const upload=join(data,'artifacts','sample.txt');await writeFile(upload,'upload fixture');
+    const upload=join(data,'sample.txt');await writeFile(upload,'upload fixture');
     await call(client,'browser_file_upload',{paths:[upload]});
     assert.match(text(await call(client,'browser_snapshot')),/Uploaded: sample.txt/);
     const download=await call(client,'browser_click',{target:'a[href="/download"]'});

@@ -1,5 +1,5 @@
 import {createServer} from 'node:http';
-export async function startFixture() {
+export async function startFixture({large=false} = {}) {
   const server=createServer((req,res)=>{
     if(req.url==='/download') {res.writeHead(200,{'Content-Type':'text/plain','Content-Disposition':'attachment; filename="example.txt"'});res.end('browser test download');return;}
     res.writeHead(200,{'Content-Type':'text/html'});
@@ -10,6 +10,7 @@ export async function startFixture() {
 <a href="/second" target="_blank">Second tab</a><a href="/download">Download sample</a>
 <label>Upload sample <input id="upload" type="file"></label><p id="uploaded">No file</p>
 <button id="danger">Delete simulated record</button><p id="deleted">Record present</p>
+${large ? '<section aria-label="Catalog">'+Array.from({length:250},(_,i)=>`<p>Catalog product ${i}: descriptive text unrelated to this form task.</p>`).join('')+'</section>' : ''}
 <canvas width="300" height="100"></canvas><p id="visual">Canvas idle</p>
 <script>
 nameField=document.querySelector('#name');nameField.value=localStorage.draft||'';
