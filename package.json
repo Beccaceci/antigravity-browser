@@ -14,7 +14,8 @@
     "doctor": "node dist/cli.js doctor",
     "test": "npm run build && node --test test/config.test.mjs test/output.test.mjs",
     "test:browser": "npm run build && node --test test/browser.test.mjs",
-    "test:economy": "npm run build && node --test test/economy.test.mjs"
+    "test:economy": "npm run build && node --test test/economy.test.mjs",
+    "test:economy:tokens": "npm run build && GEMINI_TOKEN_BENCHMARK=1 node --test test/economy.test.mjs"
   },
   "dependencies": {
     "@playwright/mcp": "0.0.83",

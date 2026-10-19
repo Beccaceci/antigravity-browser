@@ -2,6 +2,8 @@
 
 Direct browser tools for Gemini in the Antigravity app, using a visible dedicated Chrome profile. Compact output is enabled by default. Includes structured page controls and screenshot/coordinate tools through the upstream Playwright MCP server. Gemini inference stays in Antigravity; no separate API key is needed.
 
+Licensed under the [MIT License](LICENSE).
+
 ## Setup
 
 Requires macOS, Node.js 22+, and Google Chrome in `/Applications`.
@@ -32,6 +34,7 @@ npm run remove            # remove only our configuration entry
 npm test                  # configuration tests
 npm run test:browser      # real visible Chrome integration tests, temporary profile
 npm run test:economy      # compare verbose/bounded/focused output and recovery
+npm run test:economy:tokens # exact Gemini token counts for synthetic browser output; needs GEMINI_API_KEY
 node test/fixture.mjs     # local page for manual Gemini acceptance tests
 ```
 

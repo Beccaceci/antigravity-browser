@@ -37,7 +37,15 @@ Our bridge applies these design ideas to newly emitted MCP results. It does not 
 | Compact output + bounded full snapshots | 10,833 | 85 |
 | Compact output + focused finds | 818 | 85 |
 
-This is approximately 78.5% less text for bounded broad reads and 98.4% less for focused reads on this synthetic page. The measurement sums text characters for the task workflow; it excludes tool schemas, extra test assertions/recovery checks, images, prompts, reasoning, and generated final answers. It is not an exact tokenizer result, a billing measurement, or a promise about arbitrary websites. When pages are small, extra inspection requests can outweigh savings; reuse observations and ask only for needed content.
+This is approximately 78.5% less text for bounded broad reads and 98.4% less for focused reads on this synthetic page. By default, the benchmark sums text characters; it excludes tool schemas, extra test assertions/recovery checks, images, prompts, reasoning, and generated final answers.
+
+For exact Gemini tokenization of the synthetic browser tool text, set `GEMINI_API_KEY` and run:
+
+```sh
+GEMINI_API_KEY=your-key npm run test:economy:tokens
+```
+
+The test submits only its synthetic fixture text to Google's [`countTokens` endpoint](https://ai.google.dev/gemini-api/docs/tokens), using `gemini-3.8-flash` by default. Set `GEMINI_TOKEN_COUNT_MODEL` to count with a different supported model. These counts cover concatenated text returned by browser tools for the scripted task. They exclude Gemini's prompt, tool schemas, image content, reasoning, generated replies, and Antigravity-specific context overhead, so they are an objective comparison of browser text under Gemini's tokenizer, not the total token usage of a real Antigravity conversation or billing measurement. `countTokens` counts input and does not generate a model response.
 
 ## Enable in Antigravity
 
