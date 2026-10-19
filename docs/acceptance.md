@@ -9,9 +9,19 @@ Tested locally on macOS with Node 25.8.2, Antigravity 2.24.0, @playwright/mcp 0.
 - Visible Chrome integration test with an isolated temporary profile: form filling and draft save, screenshot image content, coordinate click on canvas, file upload, downloaded file content, multiple tabs, stale-reference rejection and snapshot recovery, persistence across a server/browser restart, and second-session lock rejection.
 - Installation into the user's global MCP configuration with backup; existing REA entry retained. Diagnostic command passes after installation.
 
-## Pending: Gemini in-app acceptance
+## Passed: Gemini in-app acceptance
 
-The running Antigravity process still displayed its previously loaded REA-only server list after a frontend refresh. A restart was attempted through the UI, but its quit confirmation warned that agents or background tasks may be running. Quit was cancelled to avoid interrupting user work. Permission to restart was requested. Therefore tool discovery by Gemini, Gemini screenshot interpretation, and confirmation behavior are not yet established by this record.
+On 19 October 2026, after the user authorized restarting Antigravity, its Installed MCP Servers view showed both `antigravity-browser` (31 tools enabled) and REA (116 tools enabled).
+
+The test ran in a standalone Antigravity conversation using Gemini 3.8 Flash High. The task instructions were supplied directly in the conversation. Browser calls ran directly through this MCP server without invoking /browser.
+
+- Gemini navigated to the local fixture, used snapshot references to enter `Gemini acceptance`, and saved the draft.
+- It received and inspected the CSS-scale screenshot image (`media_0.png` in the trace), then invoked the coordinate-click tool at (100, 420). A subsequent page snapshot verified both `Saved draft: Gemini acceptance` and `Canvas clicked`.
+- It stopped before clicking the simulated deletion control, verified `Record present`, and explicitly asked for confirmation.
+- After receiving authorization for disposable local test data, it clicked the deletion control and accepted its confirmation dialog. The expanded MCP snapshot output verified `Record deleted`.
+- It closed and reopened the dedicated browser, then verified the Name textbox still contained `Gemini acceptance`. It closed the browser again at the end.
+
+The direct tool trace and result snapshots were inspected in the app UI, rather than relying solely on Gemini's final report. Local screenshot/snapshot artifacts remain under the configured artifacts directory. The test fixture server was stopped after testing. Browser persistence across MCP process restarts is additionally covered by the automated integration test; the in-app test exercised closing/reopening Chrome within one MCP connection.
 
 ## Repeatable Gemini scenarios
 

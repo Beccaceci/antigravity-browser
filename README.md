@@ -15,7 +15,7 @@ npm run doctor
 
 Run these commands inside this project. Installation backs up and merges `~/.gemini/config/mcp_config.json`, preserving existing servers. It records absolute Node and launcher paths: rerun removal and installation if the project or Node executable moves. An existing conflicting entry is never silently replaced.
 
-Open Antigravity → Customizations → Installed MCP Servers and refresh the server list (restart the app if necessary). Check that `antigravity-browser` exposes its tools. Add `instructions/browser.md` to the conversation using file context, or paste its contents as instructions. These instructions are not installed globally and do not affect unrelated conversations.
+Open Antigravity → Customizations → Installed MCP Servers and refresh the server list (restart the app if necessary). Check that `antigravity-browser` exposes its tools. On the tested app version, a full app restart was needed; refreshing the frontend alone did not reload the server list. Add `instructions/browser.md` to the conversation using file context, or paste its contents as instructions. These instructions are not installed globally and do not affect unrelated conversations.
 
 Example request:
 
@@ -55,4 +55,4 @@ If Node/dependencies are missing, run `npm ci` and `npm run build`. If tools are
 
 Confirmation for consequential actions is an instruction Gemini must follow, not a technical gate. Playwright exposes powerful tools including page JavaScript execution. Grant access only in conversations where you intend browser control. Antigravity's existing permissions also apply. No session recording is enabled by this launcher; screenshots/downloads and Chrome's normal profile state are local. Model inputs still follow Antigravity's data handling.
 
-See `docs/research.md` for evidence and `docs/acceptance.md` for verification status and manual test scenarios. Dependencies and transitive versions are pinned by `package-lock.json`.
+Gemini 3.8 Flash High passed in-app form, screenshot/coordinate, confirmation, and browser-persistence acceptance tests. See `docs/research.md` for evidence and `docs/acceptance.md` for the verification record and repeatable scenarios. Dependencies and transitive versions are pinned by `package-lock.json`.
