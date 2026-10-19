@@ -7,13 +7,10 @@ Direct browser tools for Gemini in the Antigravity app, using a visible dedicate
 Requires macOS, Node.js 22+, and Google Chrome in `/Applications`.
 
 ```sh
-npm ci
-npm run build
-npm run configure
-npm run doctor
+./install.sh
 ```
 
-Run these commands inside this project. Installation backs up and merges `~/.gemini/config/mcp_config.json`, preserving existing servers. It records absolute Node and launcher paths: rerun removal and installation if the project or Node executable moves. An existing conflicting entry is never silently replaced.
+The installer checks the macOS, Node.js 22+, and Chrome requirements, installs the pinned dependencies, builds the server, merges `~/.gemini/config/mcp_config.json`, and runs diagnostics. Existing MCP servers are preserved and configuration changes are backed up. It records absolute Node and launcher paths: rerun removal and installation if the project or Node executable moves. An existing conflicting entry is never silently replaced. Run `./install.sh --help` for details.
 
 Open Antigravity → Customizations → Installed MCP Servers and refresh the server list (restart the app if necessary). Check that `antigravity-browser` exposes its tools. On the tested app version, a full app restart was needed; refreshing the frontend alone did not reload the server list. For launcher updates, use the server’s three-dot menu → Restart; a full app restart is not required for those. Expect 32 tools (31 browser tools plus saved-output recovery). Add `instructions/browser.md` to the conversation using file context, or paste its contents as instructions. These instructions are not installed globally and do not affect unrelated conversations.
 
